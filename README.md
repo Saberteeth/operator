@@ -1,16 +1,39 @@
 # gperator
+```javascript
+//Demo, 期待为onClick添加防抖动的能力。
+class Demo extends Component {
+  onClick(e) {
+    console.log('我被点击了');
+  }
 
-[![Travis][build-badge]][build]
-[![npm package][npm-badge]][npm]
-[![Coveralls][coveralls-badge]][coveralls]
+  render() {
+    return <button onClick={this.onClick.bind(this)}>点击</button>
+  }
+}
+```
 
-Describe gperator here.
+```javascript
+import Operator from '@alipay/operator';
+const { by, operator } = Operator;
+/**
+ * 找到对应的 rxjs operators
+ * 所有的 rxjs operators 都是纯函数。
+ */ 
+import { debounceTime } from 'rxjs/operators';
 
-[build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
-[build]: https://travis-ci.org/user/repo
+class Demo extends by(Component) {
+  /**
+   * 因为所有的operators都是存函数，
+   * 所以只需要找到操作符后直接在装饰器中调用即可。
+   * 可以参照 rxjs 对应 operators Example 中的 pipe部分。
+   */
+  @operator(debounceTime(1000))
+  onClick(e) {
+    console.log('我被点击了');
+  }
 
-[npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
-[npm]: https://www.npmjs.org/package/npm-package
-
-[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
-[coveralls]: https://coveralls.io/github/user/repo
+  render() {
+    return <button onClick={this.onClick.bind(this)}>点击</button>
+  }
+}
+```
